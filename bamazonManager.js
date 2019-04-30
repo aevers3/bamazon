@@ -27,6 +27,8 @@ connection.connect(function (err) {
 
 // First thing displayed to user
 function displayMenu() {
+    console.log('WELCOME, MANAGER!');
+    console.log('');
     inquirer.prompt([
         {
             type: 'list',
@@ -35,7 +37,7 @@ function displayMenu() {
             choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
         }
     ]).then(answer => {
-        console.log(answer);
+        // console.log(answer);
         switch (answer.action) {
             case 'View Products for Sale':
                 displayProductsManager();
@@ -77,6 +79,7 @@ function displayProductsManager() {
             console.log('-----------------------------------------------');
         };
         // console.log(res)
+        connection.end();
         return res;
     });
 };
@@ -86,7 +89,7 @@ function displayLowInventory() {
     // Query DB and bring back items with a stock_quantity of 5 or less.
     connection.query("SELECT * FROM products WHERE stock_quantity <= 5", function (err, res) {
         if (err) throw err;
-        console.log(res);
+        // console.log(res);
         console.log('#######################');
         console.log('');
         console.log('LOW INVENTORY ITEMS');
@@ -98,16 +101,9 @@ function displayLowInventory() {
             console.log(`We have ${res[i].stock_quantity} in stock.`)
             console.log('------------------------------');
         };
+        connection.end();
     })
 };
-
-function isNum(value) {
-    if (isNaN(value) === false) {
-        return true;
-    }
-    console.log('Please enter a number.');
-    return false;
-}
 
 // Allows a manager to restock an item.
 function addToInventory() {
@@ -142,7 +138,7 @@ function addToInventory() {
             }
         ]).then(function (answer) {
             // Once we have the answer, we will query the DB again to update inventory using data from user answer.
-            console.log(answer);
+            // console.log(answer);
             // console.log(res);
             connection.query("UPDATE products SET ? WHERE ?",
                 [
@@ -162,7 +158,6 @@ function addToInventory() {
                 // Once we perform the operations, display the updated product list.
                 console.log('');
                 displayProductsManager();
-                connection.end();
             })
     });
 }
@@ -203,7 +198,7 @@ function addNewProduct() {
             }
         }
     ]).then(function(answer) {
-        console.log(answer);
+        // console.log(answer);
         var query = connection.query("INSERT INTO products SET ?", 
         {
             product_name: answer.newProductName,
@@ -214,6 +209,7 @@ function addNewProduct() {
         function(err,res) {
             if (err) throw err;
             console.log(res.affectedRows + " product inserted!\n");
+            displayProductsManager();
         })
     })
 

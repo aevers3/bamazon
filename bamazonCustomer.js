@@ -30,9 +30,11 @@ function displayProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         // console.log(res);
-        console.log('#######################');
+
+        console.log('WELCOME, CUSTOMER!')
         console.log('');
         console.log('ITEMS FOR SALE')
+        console.log('#######################');
         console.log('');
         // Loop through each product in table...
         for (var i = 0; i < res.length; i++) {
@@ -67,7 +69,7 @@ function promptCustomer() {
                 if (isNaN(value) === false) {
                     return true;
                 }
-                console.log(' Please enter a number.');
+                console.log('Please enter a number.');
                 return false;
             }
         }
@@ -95,6 +97,7 @@ function inStockCheck(item) {
             console.log('Insufficient quantity available!');
             promptCustomer();
         } else {
+            console.log(`You have ordered ${item.quantity} ${res[0].product_name}s`);
             console.log('Handling transaction.');
             handleTransaction();
         };
