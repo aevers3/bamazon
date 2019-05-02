@@ -21,3 +21,5 @@ VALUES ("Instant Campfire", "Outdoors", 7, 17);
 INSERT INTO products(product_name, department_name, price, stock_quantity)
 VALUES ("Garden Hose", "Outdoors", 10, 23);
 SELECT * FROM products;
+
+DELETE FROM products WHERE product_name = "newProductName";
